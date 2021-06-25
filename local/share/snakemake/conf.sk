@@ -19,4 +19,11 @@ READLEN=[48, 76, 101, 150]
 ASSEMBLY="GRCh38"
 ASSEMBLY_FA=DATA_DIR+"/GRCh38.fa"
 CHROM_DIR=DATA_DIR+"/chromosomes"
+
+ASSEMBLY_M="GRCm38"
+ASSEMBLY_FA_M=DATA_DIR+"/GRCm38/fasta/genome_filtered.fa"
+CHROM_DIR_M=DATA_DIR+"/GRCm38/chromosomes"
+
+
 CHROMOSOMES=["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "chrX", "chrY"]
+CHROMOSOMES_M=["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chrX", "chrY"]
