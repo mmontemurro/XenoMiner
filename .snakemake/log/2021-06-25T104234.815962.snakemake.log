@@ -1,0 +1,4 @@
+NameError in line 19 of /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakemake/conf.sk:
+name 'GRCh38' is not defined
+  File "/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile", line 1, in <module>
+  File "/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakemake/conf.sk", line 19, in <module>

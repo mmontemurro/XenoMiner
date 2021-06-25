@@ -1,0 +1,193 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 23
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	all
+	96	split_genome
+	97
+
+[Fri Jun 25 12:01:08 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr6.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_76/chr6_76_frags
+    jobid: 22
+    wildcards: len=76, chrom=chr6
+
+
+[Fri Jun 25 12:01:08 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr1.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_150/chr1_150_frags
+    jobid: 4
+    wildcards: len=150, chrom=chr1
+
+
+[Fri Jun 25 12:01:08 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr4.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_101/chr4_101_frags
+    jobid: 15
+    wildcards: len=101, chrom=chr4
+
+
+[Fri Jun 25 12:01:08 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr4.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_48/chr4_48_frags
+    jobid: 13
+    wildcards: len=48, chrom=chr4
+
+
+[Fri Jun 25 12:01:08 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr2.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_150/chr2_150_frags
+    jobid: 8
+    wildcards: len=150, chrom=chr2
+
+
+[Fri Jun 25 12:01:08 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr5.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_48/chr5_48_frags
+    jobid: 17
+    wildcards: len=48, chrom=chr5
+
+
+[Fri Jun 25 12:01:08 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr5.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_101/chr5_101_frags
+    jobid: 19
+    wildcards: len=101, chrom=chr5
+
+
+[Fri Jun 25 12:01:08 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr5.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_150/chr5_150_frags
+    jobid: 20
+    wildcards: len=150, chrom=chr5
+
+
+[Fri Jun 25 12:01:08 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr2.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_101/chr2_101_frags
+    jobid: 7
+    wildcards: len=101, chrom=chr2
+
+
+[Fri Jun 25 12:01:08 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr4.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_150/chr4_150_frags
+    jobid: 16
+    wildcards: len=150, chrom=chr4
+
+
+[Fri Jun 25 12:01:12 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr2.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_48/chr2_48_frags
+    jobid: 5
+    wildcards: len=48, chrom=chr2
+
+
+[Fri Jun 25 12:01:16 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr1.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_101/chr1_101_frags
+    jobid: 3
+    wildcards: len=101, chrom=chr1
+
+
+[Fri Jun 25 12:01:18 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr1.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_48/chr1_48_frags
+    jobid: 1
+    wildcards: len=48, chrom=chr1
+
+
+[Fri Jun 25 12:01:18 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr3.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_76/chr3_76_frags
+    jobid: 10
+    wildcards: len=76, chrom=chr3
+
+
+[Fri Jun 25 12:01:18 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr3.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_150/chr3_150_frags
+    jobid: 12
+    wildcards: len=150, chrom=chr3
+
+
+[Fri Jun 25 12:01:18 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr6.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_101/chr6_101_frags
+    jobid: 23
+    wildcards: len=101, chrom=chr6
+
+
+[Fri Jun 25 12:01:18 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr6.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_48/chr6_48_frags
+    jobid: 21
+    wildcards: len=48, chrom=chr6
+
+
+[Fri Jun 25 12:01:18 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr4.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_76/chr4_76_frags
+    jobid: 14
+    wildcards: len=76, chrom=chr4
+
+
+[Fri Jun 25 12:01:18 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr5.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_76/chr5_76_frags
+    jobid: 18
+    wildcards: len=76, chrom=chr5
+
+
+[Fri Jun 25 12:01:18 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr2.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_76/chr2_76_frags
+    jobid: 6
+    wildcards: len=76, chrom=chr2
+
+
+[Fri Jun 25 12:01:18 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr1.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_76/chr1_76_frags
+    jobid: 2
+    wildcards: len=76, chrom=chr1
+
+
+[Fri Jun 25 12:01:19 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr3.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_48/chr3_48_frags
+    jobid: 9
+    wildcards: len=48, chrom=chr3
+
+
+[Fri Jun 25 12:01:19 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/chromosomes/chr3.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCh38_101/chr3_101_frags
+    jobid: 11
+    wildcards: len=101, chrom=chr3
+

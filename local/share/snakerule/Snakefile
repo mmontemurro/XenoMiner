@@ -1,0 +1,32 @@
+include: '../snakemake/conf.sk'
+
+
+rule all:
+    input: expand(DATA_DIR + "/" + ASSEMBLY + "_{len}/{chrom}_{len}_frags", chrom=CHROMOSOMES, len=READLEN)
+
+rule split_chrom: #Split reference genome fasta by chromosome
+    input:ASSEMBLY_FA
+    output:expand(CHROM_DIR + "/{chrom}.fa", chrom=CHROMOSOMES)
+    params: outdir=CHROM_DIR
+    shell:
+        """
+            if [ ! -d {params.outdir}]; then
+                mkdir -p {params.outdir}
+            fi
+
+            faSplit byname  {input} {params.outdir}
+        """
+
+rule split_genome: #Simulating $len bp Reads
+    input: CHROM_DIR + "/{chrom}.fa"
+    output: DATA_DIR + "/" + ASSEMBLY + "_{len}/{chrom}_{len}_frags"
+    params: tool=BIN_DIR+"/simReads", outdir=DATA_DIR + "/" + ASSEMBLY + "_{len}"
+    shell:
+        """
+        if [ ! -d {params.outdir} ]; then
+            mkdir -p {params.outdir}
+        fi
+
+        {params.tool} {input} {output} {wildcards.len}
+        """
+

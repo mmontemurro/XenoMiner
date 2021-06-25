@@ -1,0 +1,22 @@
+import os
+def find_prj_root(path=os.getcwd()):
+    if os.path.isfile(os.path.join(path,".PRJ_ROOT")):
+        return path
+    else:
+        if path:
+            return find_prj_root(os.path.dirname(path))
+        else:
+            raise Exception("Can not find the PRJ_ROOT directory")
+
+PRJ_ROOT=find_prj_root()
+ROOT = os.path.dirname(PRJ_ROOT)
+SRC_DIR=PRJ_ROOT+'/local/src'
+SHR_DIR=PRJ_ROOT+'/local/share'
+DATA_DIR=PRJ_ROOT+'/local/share/data'
+BIN_DIR=PRJ_ROOT+'/local/bin'
+
+READLEN=[48, 76, 101, 150]
+ASSEMBLY="GRCh38"
+ASSEMBLY_FA=DATA_DIR+"/GRCh38.fa"
+CHROM_DIR=DATA_DIR+"/chromosomes"
+CHROMOSOMES=["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "chrX", "chrY"]
