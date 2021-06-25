@@ -1,5 +1,0 @@
-TypeError in line 20 of /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakemake/conf.sk:
-can only concatenate str (not "int") to str
-  File "/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile", line 1, in <module>
-  File "/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakemake/conf.sk", line 20, in <module>
-  File "/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakemake/conf.sk", line 20, in <listcomp>
