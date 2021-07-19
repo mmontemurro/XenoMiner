@@ -1,0 +1,89 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 10
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	all
+	840	kmers_frequency
+	841
+
+[Mon Jul 19 15:01:51 2021]
+rule kmers_frequency:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/9mer_dictionary, /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_9mer_freq.csv
+    jobid: 121
+    wildcards: len=150, chrom=chr1, k=9
+
+
+[Mon Jul 19 15:01:51 2021]
+rule kmers_frequency:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/5mer_dictionary, /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_5mer_freq.csv
+    jobid: 117
+    wildcards: len=150, chrom=chr1, k=5
+
+
+[Mon Jul 19 15:01:51 2021]
+rule kmers_frequency:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/11mer_dictionary, /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_11mer_freq.csv
+    jobid: 123
+    wildcards: len=150, chrom=chr1, k=11
+
+
+[Mon Jul 19 15:01:51 2021]
+rule kmers_frequency:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/12mer_dictionary, /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_12mer_freq.csv
+    jobid: 124
+    wildcards: len=150, chrom=chr1, k=12
+
+
+[Mon Jul 19 15:01:51 2021]
+rule kmers_frequency:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/7mer_dictionary, /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_7mer_freq.csv
+    jobid: 119
+    wildcards: len=150, chrom=chr1, k=7
+
+
+[Mon Jul 19 15:01:51 2021]
+rule kmers_frequency:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/8mer_dictionary, /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_8mer_freq.csv
+    jobid: 120
+    wildcards: len=150, chrom=chr1, k=8
+
+
+[Mon Jul 19 15:01:51 2021]
+rule kmers_frequency:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/6mer_dictionary, /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_6mer_freq.csv
+    jobid: 118
+    wildcards: len=150, chrom=chr1, k=6
+
+
+[Mon Jul 19 15:01:51 2021]
+rule kmers_frequency:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/10mer_dictionary, /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_10mer_freq.csv
+    jobid: 122
+    wildcards: len=150, chrom=chr1, k=10
+
+
+[Mon Jul 19 15:01:51 2021]
+rule kmers_frequency:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/4mer_dictionary, /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_4mer_freq.csv
+    jobid: 116
+    wildcards: len=150, chrom=chr1, k=4
+
+
+[Mon Jul 19 15:01:51 2021]
+rule kmers_frequency:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/3mer_dictionary, /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_3mer_freq.csv
+    jobid: 115
+    wildcards: len=150, chrom=chr1, k=3
+

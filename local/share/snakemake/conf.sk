@@ -33,4 +33,5 @@ ALPHABET=['A', 'T', 'C', 'G']
 
 
 MK_KMERS_DICT=SRC_DIR + "/tools/kmers_dictionary.py"
+FASTA2MATRIX=SRC_DIR + "/preprocessing/fasta2matrix.py"
 

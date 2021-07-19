@@ -151,133 +151,85 @@ def read_fasta_sequence(fasta_file):
     return [seq_id, sequence]
 
 def main():
-    # Define the command line usage.
-"""
-    Options:
-    -upto       Use all values from k up to the specified k.
-    -revcomp    Collapse reverse complement counts.
-    -normalize [frequency|unitsphere] Normalize counts to be 
-                frequencies or project onto unit sphere.  With -upto,
-                normalization is done separately for each k.
-    -alphabet <string> Set the alphabet arbitrarily.
-    -mismatch <value>  Assign count of <value> to k-mers that 
-                       are 1 mismatch away.
-   -pseudocount <value>  Assign the given pseudocount to each bin.
-"""
+    parser = argparse.ArgumentParser(description="Compute k-mers frequency matrix from fasta")
+    parser.add_argument("-k", "--k_value", help="k value", required=True, type=int)
+    parser.add_argument("-i", "--input_file", help="Input fasta file", required=True)
+    parser.add_argument("-o", "--output_file", help="Output file", required=True)
+    parser.add_argument("-d", "--kmers_dict", help="k-mers dictionary", required=True)
+    parser.add_argument("-a", "--alphabet", help="Set the alphabet arbitrarily", default="ACGT")
+    parser.add_argument("-n", "--normalize", help="Normalize counts to be frequencies or project onto unit sphere.", choices=["frequency", "unitsphere"], default=None)
+    parser.add_argument("-p", "--pseudocount", help="Assign the given pseudocount to each matrix cell", default=0.1)
+    parser.add_argument("-m", "--mismatch", help="Assign count of <value> to k-mers that are 1 mismatch away", default=0)
 
-parser = argparse.ArgumentParser(description="Compute k-mers frequency matrix from fasta")
-parser.add_argument("-k", "--k_value", help="k value", required=True)
-parser.add_argument("-i", "--input_file", help="Input fasta file", required=True)
-parser.add_argument("-o", "--output_file", help="Output file", required=True)
-parser.add_argument("-d", "--kmers_dict", help="k-mers dictionary", required=True)
-parser.add_argument("-a", "--alphabet", help="Set the alphabet arbitrarily", default="ACGT")
-parser.add_argument("-n", "--normalize", help="Normalize counts to be frequencies or project onto unit sphere.", choices=["frequency", "unitsphere"], default=None)
-parser.add_argument("-p", "--pseudocount", help="Assign the given pseudocount to each matrix cell", default=0.1)
-parser.add_argument("-m", "--mismatch", help="Assign count of <value> to k-mers that are 1 mismatch away", default=0)
-
-args = parser.parse_args()
+    args = parser.parse_args()
 
 #upto = 0
 #revcomp = 0
-k = args.k_value
-normalize_method = args.normalize
-alphabet = args.alphabet
-mismatch = args.mismatch
-pseudocount = args.pseudocount
-
-# Check for reverse complementing non-DNA alphabets.
-#if ((revcomp == 1) and (alphabet != "ACGT")):
-#  sys.stderr.write("Attempted to reverse complement ")
-#  sys.stderr.write("a non-DNA alphabet (%s)\n" % alphabet)
-
-# Make a list of all values of k.
-#k_values = []
-#if (upto == 1):
-#  start_i_k = 1
-#else:
-#  start_i_k = k
-#k_values = range(start_i_k, k+1)
-
+    k = args.k_value
+    normalize_method = args.normalize
+    alphabet = args.alphabet
+    mismatch = args.mismatch
+    pseudocount = args.pseudocount
   
-# Make a list of all k-mers.
-with open(args.kmers_dict, 'rb') as filehandle:
-    kmer_list = pickle.load(filehandle)
+    # Make a list of all k-mers.
+    with open(args.kmers_dict, 'rb') as filehandle:
+        kmer_list = pickle.load(filehandle)
 
-# Set up a dictionary to cache reverse complements.
-#revcomp_dictionary = {}
+    outfile=open(args.output_file,"w")
 
-# Use lexicographically first version of {kmer, revcomp(kmer)}.
-#if (revcomp == 1):
-#  new_kmer_list = []
-#  for kmer in kmer_list:
-#      rev_kmer = find_revcomp(kmer, revcomp_dictionary)
-#      if (cmp(kmer, rev_kmer) <= 0):
-#          new_kmer_list.append(kmer)
-#  kmer_list = new_kmer_list;
-#  sys.stdout.write("Reduced to %d kmers.\n" % len(kmer_list))
-
-# Print the corner of the matrix.
-
-outfile=open(args.output_file,"wb")
-
-# Print the title row.
-
-outfile.write("seq_id,")
+    # Print the title row.
+    outfile.write("seq_id,")
 
 
-fasta_file = open(args.input_file, "r")
-#for i_bin in range(1, num_bins+1):
-for kmer in kmer_list:
-  #if (num_bins > 1):
-    #outfile.write("%s-%d," % (kmer, i_bin))
-      #i+=1
-  #else:
-    if(kmer==kmer_list[len(kmer_list)-1]):
-      outfile.write("%s" % kmer)
-    else:
-      outfile.write("%s," %kmer)
+    fasta_file = open(args.input_file, "r")
+    #for i_bin in range(1, num_bins+1):
+    for kmer in kmer_list:
+    #if (num_bins > 1):
+        #outfile.write("%s-%d," % (kmer, i_bin))
+        #i+=1
+    #else:
+        if(kmer==kmer_list[len(kmer_list)-1]):
+            outfile.write("%s" % kmer)
+        else:
+            outfile.write("%s," %kmer)
       #i+=1
 
-outfile.write("\n")
-# Read the first sequence.
-[id, sequence] = read_fasta_sequence(fasta_file)
+    outfile.write("\n")
+    # Read the first sequence.
+    [id, sequence] = read_fasta_sequence(fasta_file)
 
-
-# Iterate till we've read the whole file.
-i_sequence = 1
-vett=np.zeros(len(kmer_list),dtype=int)
-while (id != ""):
-
-  # Tell the user what's happening.
-  if (i_sequence % 1000 == 0):
-    print("Reading %dth sequence." % i_sequence)
-
-  # Compute the sequence vector.
-  vector = make_sequence_vector(sequence,
+    # Iterate till we've read the whole file.
+    i_sequence = 1
+    vett=np.zeros(len(kmer_list),dtype=int)
+    while (id != ""):
+        # Tell the user what's happening.
+        if (i_sequence % 1000 == 0):
+            print("Reading %dth sequence." % i_sequence)
+        # Compute the sequence vector.
+        vector = make_sequence_vector(sequence,
                                 normalize_method,
                                 k,
                                 kmer_list,
                                 pseudocount)
-
-  # Print the formatted vector.
-  outfile.write("%s," % id)
-  
-  count=len(kmer_list)
-
-  for element in vector:
-    if(count!=1):
-        outfile.write("%d," % element)
-    else:
-        outfile.write("%d" % element)
-    count = count-1
+        # Print the formatted vector.
+        outfile.write("%s," % id)
+        count=len(kmer_list)
+        for element in vector:
+            if(count!=1):
+                outfile.write("%d," % element)
+            else:
+                outfile.write("%d" % element)
+            count = count-1
         
-  outfile.write("\n")
-  # Read the next sequence.
-  [id, sequence] = read_fasta_sequence(fasta_file)
-  i_sequence += 1
-# Close the file.
-  i=0
+        outfile.write("\n")
+        # Read the next sequence.
+        [id, sequence] = read_fasta_sequence(fasta_file)
+        i_sequence += 1
+    
+    # Close the file.
+    i=0
+    outfile.close()
+    fasta_file.close()
 
-
-outfile.close()
-fasta_file.close()
+if __name__ == "__main__":
+    sys.exit(main())

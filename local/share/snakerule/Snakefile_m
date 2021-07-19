@@ -2,7 +2,8 @@ include: '../snakemake/conf.sk'
 
 
 rule all:
-    input: expand(DATA_DIR + "/" + ASSEMBLY_M + "_{len}/{chrom}_{len}_frags", chrom=CHROMOSOMES_M, len=READLEN)
+    input: expand(DATA_DIR + "/" + ASSEMBLY_M + "_{len}/{chrom}_{len}_frags", chrom=CHROMOSOMES_M, len=READLEN),
+           expand(DATA_DIR + "/" + ASSEMBLY_M + "_{len}/{chrom}_{len}_{k}mer_freq.csv", chrom=CHROMOSOMES_M, len=READLEN, k=K)
 
 #filter chromosomes (keep chr1-22,X,Y)
 #samtools faidx {input} chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY > local/share/data/GRCh38.fa
@@ -33,3 +34,11 @@ rule split_genome: #Simulating $len bp Reads
         {params.tool} {input} {output} {wildcards.len}
         """
 
+rule kmers_frequency:
+    input: kmers_list = DATA_DIR + "/{k}mer_dictionary", fasta_file = DATA_DIR + "/" + ASSEMBLY_M + "_{len}/{chrom}_{len}_frags"
+    output: DATA_DIR + "/" + ASSEMBLY_M + "_{len}/{chrom}_{len}_{k}mer_freq.csv"
+    params: tool=FASTA2MATRIX, k="{k}"
+    shell:
+        """
+        python {params.tool} -k {params.k} -i {input.fasta_file} -d {input.kmers_list} -o {output}
+        """
