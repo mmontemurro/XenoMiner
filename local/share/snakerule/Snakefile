@@ -2,7 +2,8 @@ include: '../snakemake/conf.sk'
 
 
 rule all:
-    input: expand(DATA_DIR + "/" + ASSEMBLY + "_{len}/{chrom}_{len}_frags", chrom=CHROMOSOMES, len=READLEN)
+    input: expand(DATA_DIR + "/" + ASSEMBLY + "_{len}/{chrom}_{len}_frags", chrom=CHROMOSOMES, len=READLEN),
+           expand(DATA_DIR + "/{k}mer_dictionary", k=K)
 
 #filter chromosomes (keep chr1-22,X,Y)
 #samtools faidx {input} chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY > local/share/data/GRCh38.fa
@@ -31,5 +32,13 @@ rule split_genome: #Simulating $len bp Reads
         fi
 
         {params.tool} {input} {output} {wildcards.len}
+        """
+
+rule make_kmer_list: #generating dictionary of kmers for different values of K
+    output: DATA_DIR + "/{k}mer_dictionary"
+    params: alphabet=ALPHABET, tool=MK_KMERS_DICT, outdir=DATA_DIR
+    shell:
+        """
+        python {params.tool} -k {wildcards.k} -a {params.alphabet} -o {params.outdir}
         """
 
