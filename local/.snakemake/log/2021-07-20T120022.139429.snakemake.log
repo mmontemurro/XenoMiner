@@ -1,0 +1,475 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 10
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	all
+	84	split_genome
+	85
+
+[Tue Jul 20 12:00:22 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr1.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_76/chr1_76_frags
+    jobid: 2
+    wildcards: len=76, chrom=chr1
+
+
+[Tue Jul 20 12:00:22 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr2.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_48/chr2_48_frags
+    jobid: 5
+    wildcards: len=48, chrom=chr2
+
+
+[Tue Jul 20 12:00:22 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chrX.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_48/chrX_48_frags
+    jobid: 77
+    wildcards: len=48, chrom=chrX
+
+
+[Tue Jul 20 12:00:22 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr2.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr2_150_frags
+    jobid: 8
+    wildcards: len=150, chrom=chr2
+
+
+[Tue Jul 20 12:00:22 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chrX.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chrX_150_frags
+    jobid: 80
+    wildcards: len=150, chrom=chrX
+
+
+[Tue Jul 20 12:00:22 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr1.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_101/chr1_101_frags
+    jobid: 3
+    wildcards: len=101, chrom=chr1
+
+
+[Tue Jul 20 12:00:22 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr2.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_101/chr2_101_frags
+    jobid: 7
+    wildcards: len=101, chrom=chr2
+
+
+[Tue Jul 20 12:00:22 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr1.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags
+    jobid: 4
+    wildcards: len=150, chrom=chr1
+
+
+[Tue Jul 20 12:00:22 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr1.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_48/chr1_48_frags
+    jobid: 1
+    wildcards: len=48, chrom=chr1
+
+
+[Tue Jul 20 12:00:22 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr2.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_76/chr2_76_frags
+    jobid: 6
+    wildcards: len=76, chrom=chr2
+
+[Tue Jul 20 12:00:56 2021]
+Finished job 80.
+1 of 85 steps (1%) done
+
+[Tue Jul 20 12:00:58 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chrX.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_101/chrX_101_frags
+    jobid: 79
+    wildcards: len=101, chrom=chrX
+
+[Tue Jul 20 12:01:18 2021]
+Finished job 79.
+2 of 85 steps (2%) done
+
+[Tue Jul 20 12:01:18 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chrX.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_76/chrX_76_frags
+    jobid: 78
+    wildcards: len=76, chrom=chrX
+
+[Tue Jul 20 12:01:37 2021]
+Finished job 78.
+3 of 85 steps (4%) done
+
+[Tue Jul 20 12:01:37 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr3.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_101/chr3_101_frags
+    jobid: 11
+    wildcards: len=101, chrom=chr3
+
+[Tue Jul 20 12:01:55 2021]
+Finished job 11.
+4 of 85 steps (5%) done
+
+[Tue Jul 20 12:01:55 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr3.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_76/chr3_76_frags
+    jobid: 10
+    wildcards: len=76, chrom=chr3
+
+[Tue Jul 20 12:01:58 2021]
+Finished job 77.
+5 of 85 steps (6%) done
+[Tue Jul 20 12:01:58 2021]
+Finished job 5.
+6 of 85 steps (7%) done
+[Tue Jul 20 12:01:59 2021]
+Finished job 8.
+7 of 85 steps (8%) done
+[Tue Jul 20 12:01:59 2021]
+Finished job 7.
+8 of 85 steps (9%) done
+[Tue Jul 20 12:01:59 2021]
+Finished job 6.
+9 of 85 steps (11%) done
+[Tue Jul 20 12:02:00 2021]
+Finished job 2.
+10 of 85 steps (12%) done
+[Tue Jul 20 12:02:01 2021]
+Finished job 3.
+11 of 85 steps (13%) done
+[Tue Jul 20 12:02:03 2021]
+Finished job 1.
+12 of 85 steps (14%) done
+[Tue Jul 20 12:02:06 2021]
+Finished job 4.
+13 of 85 steps (15%) done
+
+[Tue Jul 20 12:02:06 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr4.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_76/chr4_76_frags
+    jobid: 14
+    wildcards: len=76, chrom=chr4
+
+
+[Tue Jul 20 12:02:10 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr5.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_76/chr5_76_frags
+    jobid: 18
+    wildcards: len=76, chrom=chr5
+
+
+[Tue Jul 20 12:02:14 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr4.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_101/chr4_101_frags
+    jobid: 15
+    wildcards: len=101, chrom=chr4
+
+
+[Tue Jul 20 12:02:15 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr5.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_101/chr5_101_frags
+    jobid: 19
+    wildcards: len=101, chrom=chr5
+
+
+[Tue Jul 20 12:02:17 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr3.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr3_150_frags
+    jobid: 12
+    wildcards: len=150, chrom=chr3
+
+
+[Tue Jul 20 12:02:18 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr3.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_48/chr3_48_frags
+    jobid: 9
+    wildcards: len=48, chrom=chr3
+
+
+[Tue Jul 20 12:02:19 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr4.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr4_150_frags
+    jobid: 16
+    wildcards: len=150, chrom=chr4
+
+
+[Tue Jul 20 12:02:20 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr5.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_48/chr5_48_frags
+    jobid: 17
+    wildcards: len=48, chrom=chr5
+
+
+[Tue Jul 20 12:02:22 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr4.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_48/chr4_48_frags
+    jobid: 13
+    wildcards: len=48, chrom=chr4
+
+[Tue Jul 20 12:03:25 2021]
+Finished job 10.
+14 of 85 steps (16%) done
+
+[Tue Jul 20 12:03:25 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr5.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr5_150_frags
+    jobid: 20
+    wildcards: len=150, chrom=chr5
+
+[Tue Jul 20 12:03:31 2021]
+Finished job 12.
+15 of 85 steps (18%) done
+[Tue Jul 20 12:03:32 2021]
+Finished job 16.
+16 of 85 steps (19%) done
+[Tue Jul 20 12:03:33 2021]
+Finished job 19.
+17 of 85 steps (20%) done
+[Tue Jul 20 12:03:34 2021]
+Finished job 15.
+18 of 85 steps (21%) done
+[Tue Jul 20 12:03:36 2021]
+Finished job 14.
+19 of 85 steps (22%) done
+[Tue Jul 20 12:03:37 2021]
+Finished job 18.
+20 of 85 steps (24%) done
+
+[Tue Jul 20 12:03:37 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr7.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_48/chr7_48_frags
+    jobid: 25
+    wildcards: len=48, chrom=chr7
+
+
+[Tue Jul 20 12:03:39 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr6.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_101/chr6_101_frags
+    jobid: 23
+    wildcards: len=101, chrom=chr6
+
+
+[Tue Jul 20 12:03:40 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr7.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr7_150_frags
+    jobid: 28
+    wildcards: len=150, chrom=chr7
+
+
+[Tue Jul 20 12:03:41 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr6.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_76/chr6_76_frags
+    jobid: 22
+    wildcards: len=76, chrom=chr6
+
+
+[Tue Jul 20 12:03:42 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr6.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr6_150_frags
+    jobid: 24
+    wildcards: len=150, chrom=chr6
+
+
+[Tue Jul 20 12:03:44 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr6.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_48/chr6_48_frags
+    jobid: 21
+    wildcards: len=48, chrom=chr6
+
+[Tue Jul 20 12:03:50 2021]
+Finished job 17.
+21 of 85 steps (25%) done
+
+[Tue Jul 20 12:03:50 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr7.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_101/chr7_101_frags
+    jobid: 27
+    wildcards: len=101, chrom=chr7
+
+[Tue Jul 20 12:03:53 2021]
+Finished job 13.
+22 of 85 steps (26%) done
+[Tue Jul 20 12:03:54 2021]
+Finished job 9.
+23 of 85 steps (27%) done
+
+[Tue Jul 20 12:03:54 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr10.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr10_150_frags
+    jobid: 40
+    wildcards: len=150, chrom=chr10
+
+
+[Tue Jul 20 12:03:57 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr7.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_76/chr7_76_frags
+    jobid: 26
+    wildcards: len=76, chrom=chr7
+
+[Tue Jul 20 12:04:06 2021]
+Finished job 20.
+24 of 85 steps (28%) done
+
+[Tue Jul 20 12:04:06 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr10.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_48/chr10_48_frags
+    jobid: 37
+    wildcards: len=48, chrom=chr10
+
+[Tue Jul 20 12:04:24 2021]
+Finished job 28.
+25 of 85 steps (29%) done
+
+[Tue Jul 20 12:04:24 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr10.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_76/chr10_76_frags
+    jobid: 38
+    wildcards: len=76, chrom=chr10
+
+[Tue Jul 20 12:04:27 2021]
+Finished job 24.
+26 of 85 steps (31%) done
+
+[Tue Jul 20 12:04:28 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr10.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_101/chr10_101_frags
+    jobid: 39
+    wildcards: len=101, chrom=chr10
+
+[Tue Jul 20 12:04:30 2021]
+Finished job 23.
+27 of 85 steps (32%) done
+
+[Tue Jul 20 12:04:30 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr8.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_48/chr8_48_frags
+    jobid: 29
+    wildcards: len=48, chrom=chr8
+
+[Tue Jul 20 12:04:35 2021]
+Finished job 40.
+28 of 85 steps (33%) done
+
+[Tue Jul 20 12:04:35 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr8.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr8_150_frags
+    jobid: 32
+    wildcards: len=150, chrom=chr8
+
+[Tue Jul 20 12:04:39 2021]
+Finished job 22.
+29 of 85 steps (34%) done
+[Tue Jul 20 12:04:41 2021]
+Finished job 27.
+30 of 85 steps (35%) done
+
+[Tue Jul 20 12:04:41 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr8.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_76/chr8_76_frags
+    jobid: 30
+    wildcards: len=76, chrom=chr8
+
+
+[Tue Jul 20 12:04:43 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr8.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_101/chr8_101_frags
+    jobid: 31
+    wildcards: len=101, chrom=chr8
+
+[Tue Jul 20 12:04:50 2021]
+Finished job 25.
+31 of 85 steps (36%) done
+
+[Tue Jul 20 12:04:50 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr14.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_76/chr14_76_frags
+    jobid: 54
+    wildcards: len=76, chrom=chr14
+
+[Tue Jul 20 12:04:54 2021]
+Finished job 26.
+32 of 85 steps (38%) done
+
+[Tue Jul 20 12:04:54 2021]
+rule split_genome:
+    input: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr14.fa
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_101/chr14_101_frags
+    jobid: 55
+    wildcards: len=101, chrom=chr14
+
+Terminating processes on user request, this might take some time.
+Cancelling snakemake on user request.
+[Tue Jul 20 12:04:57 2021]
+Error in rule split_genome:
+    jobid: 55
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_101/chr14_101_frags
+
+RuleException:
+CalledProcessError in line 29 of /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile_m:
+Command ' set -euo pipefail;  
+        if [ ! -d /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_101 ]; then
+            mkdir -p /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_101
+        fi
+
+        /mnt/trcanmed/snaketree/prj/XenoMiner/local/bin/simReads /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr14.fa /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_101/chr14_101_frags 101 ' died with <Signals.SIGINT: 2>.
+  File "/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile_m", line 29, in __rule_split_genome
+  File "/usr/lib/python3.7/concurrent/futures/thread.py", line 57, in run
+[Tue Jul 20 12:04:58 2021]
+Error in rule split_genome:
+    jobid: 21
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_48/chr6_48_frags
+
+RuleException:
+CalledProcessError in line 29 of /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile_m:
+Command ' set -euo pipefail;  
+        if [ ! -d /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_48 ]; then
+            mkdir -p /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_48
+        fi
+
+        /mnt/trcanmed/snaketree/prj/XenoMiner/local/bin/simReads /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38/chromosomes/chr6.fa /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_48/chr6_48_frags 48 ' died with <Signals.SIGINT: 2>.
+  File "/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile_m", line 29, in __rule_split_genome
+  File "/usr/lib/python3.7/concurrent/futures/thread.py", line 57, in run
+Removing output files of failed job split_genome since they might be corrupted:
+/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_48/chr6_48_frags

@@ -87,3 +87,66 @@ rule kmers_frequency:
     jobid: 115
     wildcards: len=150, chrom=chr1, k=3
 
+[Mon Jul 19 20:41:44 2021]
+Error in rule kmers_frequency:
+    jobid: 115
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_3mer_freq.csv
+
+RuleException:
+CalledProcessError in line 42 of /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile_m:
+Command ' set -euo pipefail;  
+        python /mnt/trcanmed/snaketree/prj/XenoMiner/local/src/preprocessing/fasta2matrix.py -k 3 -i /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags -d /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/3mer_dictionary -o /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_3mer_freq.csv ' returned non-zero exit status 1.
+  File "/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile_m", line 42, in __rule_kmers_frequency
+  File "/usr/lib/python3.7/concurrent/futures/thread.py", line 57, in run
+Removing output files of failed job kmers_frequency since they might be corrupted:
+/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_3mer_freq.csv
+[Tue Jul 20 02:27:33 2021]
+Error in rule kmers_frequency:
+    jobid: 116
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_4mer_freq.csv
+
+RuleException:
+CalledProcessError in line 42 of /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile_m:
+Command ' set -euo pipefail;  
+        python /mnt/trcanmed/snaketree/prj/XenoMiner/local/src/preprocessing/fasta2matrix.py -k 4 -i /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags -d /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/4mer_dictionary -o /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_4mer_freq.csv ' returned non-zero exit status 1.
+  File "/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile_m", line 42, in __rule_kmers_frequency
+  File "/usr/lib/python3.7/concurrent/futures/thread.py", line 57, in run
+Removing output files of failed job kmers_frequency since they might be corrupted:
+/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_4mer_freq.csv
+Terminating processes on user request, this might take some time.
+[Tue Jul 20 09:59:10 2021]
+Error in rule kmers_frequency:
+    jobid: 117
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_5mer_freq.csv
+
+RuleException:
+CalledProcessError in line 42 of /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile_m:
+Command ' set -euo pipefail;  
+        python /mnt/trcanmed/snaketree/prj/XenoMiner/local/src/preprocessing/fasta2matrix.py -k 5 -i /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags -d /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/5mer_dictionary -o /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_5mer_freq.csv ' died with <Signals.SIGINT: 2>.
+  File "/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile_m", line 42, in __rule_kmers_frequency
+  File "/usr/lib/python3.7/concurrent/futures/thread.py", line 57, in run
+[Tue Jul 20 09:59:10 2021]
+Error in rule kmers_frequency:
+    jobid: 123
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_11mer_freq.csv
+
+RuleException:
+CalledProcessError in line 42 of /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile_m:
+Command ' set -euo pipefail;  
+        python /mnt/trcanmed/snaketree/prj/XenoMiner/local/src/preprocessing/fasta2matrix.py -k 11 -i /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags -d /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/11mer_dictionary -o /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_11mer_freq.csv ' died with <Signals.SIGINT: 2>.
+  File "/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile_m", line 42, in __rule_kmers_frequency
+  File "/usr/lib/python3.7/concurrent/futures/thread.py", line 57, in run
+Removing output files of failed job kmers_frequency since they might be corrupted:
+/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_5mer_freq.csv
+Cancelling snakemake on user request.
+[Tue Jul 20 09:59:11 2021]
+Error in rule kmers_frequency:
+    jobid: 118
+    output: /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_6mer_freq.csv
+
+RuleException:
+CalledProcessError in line 42 of /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile_m:
+Command ' set -euo pipefail;  
+        python /mnt/trcanmed/snaketree/prj/XenoMiner/local/src/preprocessing/fasta2matrix.py -k 6 -i /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_frags -d /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/6mer_dictionary -o /mnt/trcanmed/snaketree/prj/XenoMiner/local/share/data/GRCm38_150/chr1_150_6mer_freq.csv ' died with <Signals.SIGINT: 2>.
+  File "/mnt/trcanmed/snaketree/prj/XenoMiner/local/share/snakerule/Snakefile_m", line 42, in __rule_kmers_frequency
+  File "/usr/lib/python3.7/concurrent/futures/thread.py", line 57, in run

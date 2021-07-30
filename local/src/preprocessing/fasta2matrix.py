@@ -11,100 +11,43 @@ import math
 import numpy as np
 import argparse
 import pickle
+from Bio import SeqIO
+from scipy.sparse import csr_matrix, diags
 
-def normalize_vector (normalize_method,
-                      k,
-                      vector,
-                      kmer_list):
-    # Do nothing if there's no normalization.
-    if (normalize_method == "none"):
-        return(vector)
-    # Initialize all vector lengths to zeroes.
-    vector_lengths = 0
-    # Compute sum or sum-of-squares separately for each k.
-    num_kmers = len(kmer_list)
-    for i_kmer in range(0, num_kmers):
-        count = vector[i_kmer]
-        if (normalize_method == "frequency"):
-            vector_lengths += count
-        elif (normalize_method == "unitsphere"):
-            vector_lengths += count * count
-    # Square root each sum if we're doing 2-norm.
-    if (normalize_method == "unitsphere"):
-        vector_lengths = math.sqrt(vector_lengths[k])
-    # Divide through by each sum.
-    return_value = []
-    for i_kmer in range(0, num_kmers):
-        count = vector[i_kmer]
-        if (vector_lengths == 0):
-            return_value.append(0)
-        else:
-            return_value.append(float(count) / float(vector_lengths))
-    return(return_value)
+def list2dict(a):
+    res_dct = {a[i] : i for i in range(0, len(a) ) }
+    return res_dct
 
-##############################################################################
-# Make a copy of a given string, substituting one letter.
-def substitute (position,
-                letter,
-                string):
+def normalize_matrix (matrix):
+    #create a sparse diagonal matrix from the reciprocals of row sums
+    d = diags(1/matrix.sum(axis=1).A.ravel())
 
-    return_value = ""
-    if (position > 0):
-        return_value = return_value + string[0:position]
-    return_value = return_value + letter
-    if (position < (len(string) - 1)):
-        return_value = return_value + string[position+1:]
-                   
-    return(return_value)
+    #multiply the diagonal matrix with the matrix
+    n = (d @ matrix)
+    return n
 
 
 ##############################################################################
 def make_sequence_vector (sequence,
-                          normalize_method,
                           k,
-                          kmer_list,
-                          pseudocount):
-    # Make an empty counts vector.
-    kmer_counts = {}
-    #for i_bin in range(0, num_bins):
-    #    kmer_counts.append({})
-    # Iterate along the sequence.
+                          kmer_dict,
+                          indptr,
+                          indices,
+                          data):
+
+    # Iterate along the sequence, find kmers and build the sparce count vector.
     seq_length = len(sequence) - k + 1
     for i_seq in range(0, seq_length):
-        # Compute which bin number this goes in.
-        #bin_num = compute_bin_num(num_bins, i_seq, k, numbers)
         # Extract this k-mer.
         kmer = sequence[i_seq : i_seq + k]
-        # If we're doing reverse complement, store the count in the
-        # the version that starts with A or C.
-        #if (revcomp == 1):
-        #    rev_kmer = find_revcomp(kmer, revcomp_dictionary)
-        #    if (cmp(kmer, rev_kmer) > 0):
-        #        kmer = rev_kmer
-        # Increment the count.
-        if (kmer in kmer_counts.keys()):
-            kmer_counts[kmer] += 1
-        else:
-            kmer_counts[kmer] = 1
-    # Build the sequence vector.
-    sequence_vector = []
-    #for i_bin in range(0, num_bins):
-    #    for kmer in kmer_list:
-    #        if (kmer_counts[i_bin].has_key(kmer)):
-    #            sequence_vector.append(kmer_counts[i_bin][kmer] + pseudocount)
-    #        else:
-    #            sequence_vector.append(pseudocount)
-    for kmer in kmer_list:
-        if (kmer in kmer_counts.keys()):
-            sequence_vector.append(kmer_counts[kmer] + pseudocount)
-        else:
-            sequence_vector.append(pseudocount)
-    # Normalize it
-    return_value = normalize_vector(normalize_method,
-                                    k,
-                                    sequence_vector,
-                                    kmer_list)
-    return(return_value)
+        if kmer in kmer_dict.keys():
+            #There may be some kmers containing N's, so we skip them
+            index = kmer_dict[kmer]
+            indices.append(index)
+            data.append(1)
+
+    indptr.append(len(indices))
+    return [indptr, indices, data]
 
 #Reads 1 sequence from a fasta file
 def read_fasta_sequence(fasta_file):
@@ -112,23 +55,17 @@ def read_fasta_sequence(fasta_file):
     first_char = fasta_file.read(1)
     # If it's empty, we're done.
     if (first_char == ""):
-        return([""])
+        return("")
     # If it's ">", then this is the first sequence in the file.
     elif (first_char == ">"):
         line = ""
     else:
+        # the previous iteration has already consumed the ">"
         line = first_char
     # Read the rest of the header line.
     seq_id = line + fasta_file.readline()
     seq_id = seq_id.rstrip('\n')
-    # Get the rest of the ID.
-    #words = line.split()
-    #if (len(words) == 0):
-    #  sys.stderr.write("No words in header line (%s)\n" % line)
-    #  sys.exit(1)
-##    id = words[0]
-    #id = words[1].split("=")[1]        
-    # Read the sequence, through the next ">".
+    # Read the sequence, through the next ">" or the end of file.
     first_char = fasta_file.read(1)
     sequence = ""
     while ((first_char != ">") and (first_char != "")):
@@ -144,11 +81,25 @@ def read_fasta_sequence(fasta_file):
     sequence = clean_sequence
     # Remove spaces.
     clean_sequence = ""
+    N_counts = 0
     for letter in sequence:
         if (letter != " "):
             clean_sequence = clean_sequence + letter
-    sequence = clean_sequence.upper()       
-    return [seq_id, sequence]
+            if letter == 'N' or letter == 'n':
+                N_counts += 1
+    seq_length = len(sequence)
+    if N_counts <= (0.5*seq_length):
+        sequence = clean_sequence.upper()     
+    else:
+        sequence = None  
+    return sequence
+
+def check_gaps(seq):
+    count = 0
+    for b in seq:
+        if b == 'N':
+            count += 1
+    return count
 
 def main():
     parser = argparse.ArgumentParser(description="Compute k-mers frequency matrix from fasta")
@@ -157,79 +108,54 @@ def main():
     parser.add_argument("-o", "--output_file", help="Output file", required=True)
     parser.add_argument("-d", "--kmers_dict", help="k-mers dictionary", required=True)
     parser.add_argument("-a", "--alphabet", help="Set the alphabet arbitrarily", default="ACGT")
-    parser.add_argument("-n", "--normalize", help="Normalize counts to be frequencies or project onto unit sphere.", choices=["frequency", "unitsphere"], default=None)
-    parser.add_argument("-p", "--pseudocount", help="Assign the given pseudocount to each matrix cell", default=0.1)
-    parser.add_argument("-m", "--mismatch", help="Assign count of <value> to k-mers that are 1 mismatch away", default=0)
+    parser.add_argument("-n", "--discard_gaps", action="store_true", default=False, help='If declared, discards reads made for more than 50%% of N')
+    parser.add_argument("-f", "--kmers_frequency", action="store_true", default=False, help="If declared, normalizes kmer counts by computing threir frequency in each read")
 
     args = parser.parse_args()
 
-#upto = 0
-#revcomp = 0
     k = args.k_value
-    normalize_method = args.normalize
     alphabet = args.alphabet
-    mismatch = args.mismatch
-    pseudocount = args.pseudocount
   
     # Make a list of all k-mers.
     with open(args.kmers_dict, 'rb') as filehandle:
         kmer_list = pickle.load(filehandle)
-
-    outfile=open(args.output_file,"w")
-
-    # Print the title row.
-    outfile.write("seq_id,")
+    kmer_dict = list2dict(kmer_list)
 
 
-    fasta_file = open(args.input_file, "r")
-    #for i_bin in range(1, num_bins+1):
-    for kmer in kmer_list:
-    #if (num_bins > 1):
-        #outfile.write("%s-%d," % (kmer, i_bin))
-        #i+=1
-    #else:
-        if(kmer==kmer_list[len(kmer_list)-1]):
-            outfile.write("%s" % kmer)
-        else:
-            outfile.write("%s," %kmer)
-      #i+=1
+    fasta_file = SeqIO.parse(open(args.input_file),'fasta')
+    # Iterate till we've read the whole file and generate a sparse count matrix
+    indptr = [0]
+    indices = []       
+    data = []
 
-    outfile.write("\n")
-    # Read the first sequence.
-    [id, sequence] = read_fasta_sequence(fasta_file)
-
-    # Iterate till we've read the whole file.
-    i_sequence = 1
-    vett=np.zeros(len(kmer_list),dtype=int)
-    while (id != ""):
+    i_sequence = 0
+    for sequence in fasta_file:
         # Tell the user what's happening.
+        if args.discard_gaps == True:
+            Ncount = check_gaps(sequence.seq)
+            if Ncount > (0.5*len(sequence.seq)):
+                continue
         if (i_sequence % 1000 == 0):
-            print("Reading %dth sequence." % i_sequence)
-        # Compute the sequence vector.
-        vector = make_sequence_vector(sequence,
-                                normalize_method,
+            print("Reading %dth sequence." % (i_sequence + 1))
+        # Compute the sparse count vector.
+        [indptr, indices, data] = make_sequence_vector(sequence.seq,
                                 k,
-                                kmer_list,
-                                pseudocount)
-        # Print the formatted vector.
-        outfile.write("%s," % id)
-        count=len(kmer_list)
-        for element in vector:
-            if(count!=1):
-                outfile.write("%d," % element)
-            else:
-                outfile.write("%d" % element)
-            count = count-1
-        
-        outfile.write("\n")
-        # Read the next sequence.
-        [id, sequence] = read_fasta_sequence(fasta_file)
+                                kmer_dict,
+                                indptr,
+                                indices,
+                                data)    # Close the file.
         i_sequence += 1
+
+    #count_matrix = csr_matrix((data, indices, indptr), shape=(len(list(fasta_file)), len(kmer_list)), dtype=int)
+    count_matrix = csr_matrix((data, indices, indptr), dtype=int)
+    if args.kmers_frequency == True:
+        frequency_matrix = normalize_matrix(count_matrix)
+        with open(args.output_file, "wb") as f:
+            pickle.dump(frequency_matrix, f)
+    else:
+        with open(args.output_file, "wb") as f:
+            pickle.dump(count_matrix, f)
     
-    # Close the file.
-    i=0
-    outfile.close()
-    fasta_file.close()
 
 if __name__ == "__main__":
     sys.exit(main())
