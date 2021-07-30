@@ -14,15 +14,11 @@ SRC_DIR=PRJ_ROOT+'/local/src'
 SHR_DIR=PRJ_ROOT+'/local/share'
 DATA_DIR=PRJ_ROOT+'/local/share/data'
 BIN_DIR=PRJ_ROOT+'/local/bin'
-DATASET=PRJ_ROOT+"/dataset"
-
-LOGS_DIR=DATASET + "/logs"
-BENCHMARKS_DIR=DATASET + "/benchmarks"
 
 READLEN=[48, 76, 101, 150]
 ASSEMBLY="GRCh38"
-ASSEMBLY_FA=DATA_DIR+"/GRCh38/fasta/GRCh38.fa"
-CHROM_DIR=DATA_DIR+"/GRCh38/chromosomes"
+ASSEMBLY_FA=DATA_DIR+"/GRCh38.fa"
+CHROM_DIR=DATA_DIR+"/chromosomes"
 
 ASSEMBLY_M="GRCm38"
 ASSEMBLY_FA_M=DATA_DIR+"/GRCm38/fasta/genome_filtered.fa"

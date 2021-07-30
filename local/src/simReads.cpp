@@ -40,10 +40,10 @@ int main(int argc, char *argv[]){
   size = std::remove(seq, seq + size, '\n') - seq;
 
   //Output sequences
-  for (int i=start; i<=size; i = i + atoi(argv[3]))
+  for (int i=start; i<=size-atoi(argv[3]); i++)
   {
     outfile << ">" << argv[1] << "_" << i-start+1 << endl;
-    for(int j=0; j<atoi(argv[3]) && i+j < size; j++) //fix: stop when the last base is reached, i + j < size
+    for(int j=0; j<atoi(argv[3]); j++)
     {
       outfile << seq[i+j];
     }
