@@ -1,0 +1,57 @@
+include: '../snakemake/conf.sk'
+
+def get_chr_count(wildcards):
+    import os, glob
+    files = glob.glob(os.path.join(DATA_DIR, "kmers_stats_differential", wildcards.assembly + "_*_" + str(wildcards.k) + "mer_count" ))
+    return files
+
+
+rule all:
+    input:
+        expand(DATA_DIR + "/kmers_stats_differential/{assembly}_{chrom}_{k}mer_count", assembly=ASSEMBLY, k=12, chrom=CHROMOSOMES),
+        expand(DATA_DIR + "/kmers_stats_differential/{assembly}_{chrom}_{k}mer_count", assembly=ASSEMBLY_M, k=12, chrom=CHROMOSOMES_M),
+        expand(DATA_DIR + "/kmers_stats_differential/GRCh38_GRCm38_{k}mer_pearson_corr", k=12),
+        expand(DATA_DIR + "/kmers_stats_differential/{assembly}_{k}mer_pairwise_chrom_pearson_heatmap.png", k=12, assembly=[ASSEMBLY, ASSEMBLY_M])
+
+rule filter_kmer_counts:
+    input: count_file = DATA_DIR + "/kmers_stats/{assembly}_{chrom}_{k}mer_count",
+        diff_file = DATA_DIR + "/kmers_stats/GRCh38_GRCm38_{k}mer_abs_diff"
+    output: DATA_DIR + "/kmers_stats_differential/{assembly}_{chrom}_{k}mer_count"
+    params: outdir = DATA_DIR + "/kmers_stats_differential/", tool = FILTER_BY_FREQ, knee=KNEE
+    log: LOGS_DIR + "/kmers_count_differential-{assembly}_{chrom}_{k}mer.log"
+    shell:
+        """
+            if [ ! -d {params.outdir} ]; then
+                mkdir -p  {params.outdir}
+            fi
+
+            python {params.tool} -i {input.count_file} -d {input.diff_file} -t {params.knee} -o {output} 2> {log}
+        """
+
+rule kmers_corr:
+    input: h = expand(DATA_DIR + "/kmers_stats_differential/"+ASSEMBLY+"_{chrom}_{k}mer_count", k=12, chrom=CHROMOSOMES),
+            m = expand(DATA_DIR + "/kmers_stats_differential/"+ASSEMBLY_M+"_{chrom}_{k}mer_count", k=12, chrom=CHROMOSOMES_M)
+    output:
+        DATA_DIR + "/kmers_stats_differential/GRCh38_{k}mer_count",
+        DATA_DIR + "/kmers_stats_differential/GRCm38_{k}mer_count", 
+        DATA_DIR + "/kmers_stats_differential/GRCh38_GRCm38_{k}mer_pearson_corr"
+    params: tool=KMERSTATS,
+            k=12,
+            outdir=DATA_DIR + "/kmers_stats_differential"
+    log: LOGS_DIR + "/{k}mers_corr_differential.log"
+    benchmark: BENCHMARKS_DIR + "{k}mers_corr_differential.tsv"
+    shell:
+        """
+            python {params.tool} -H {input.h} -M {input.m} -K {params.k} -O {params.outdir} 2> {log}
+        """
+
+rule kmers_corr_intra:
+    input: get_chr_count
+    output: DATA_DIR + "/kmers_stats_differential/{assembly}_{k}mer_pairwise_chrom_pearson.csv",
+            DATA_DIR + "/kmers_stats_differential/{assembly}_{k}mer_pairwise_chrom_pearson_heatmap.png"
+    params: tool = KMERSTATS_INTRA, outprefix=DATA_DIR + "/kmers_stats_differential/{assembly}_{k}mer", c= lambda wildcards: CHROMOSOMES if wildcards.assembly == ASSEMBLY else CHROMOSOMES_M
+    log: LOGS_DIR + "/kmers_corr_intra-{assembly}-{k}mer.log"
+    shell:
+        """
+            python {params.tool} -i {input} -o {params.outprefix} -c {params.c} 2> {log}
+        """

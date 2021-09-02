@@ -2,8 +2,10 @@ include: '../snakemake/conf.sk'
 
 
 rule all:
-    input: expand(DATA_DIR + "/" + ASSEMBLY_M + "_{len}/{chrom}_{len}_frags", chrom=CHROMOSOMES_M, len=READLEN),
-           expand(DATA_DIR + "/" + ASSEMBLY_M + "_{len}/{chrom}_{len}_{k}mer_freq.csv", chrom=CHROMOSOMES_M, len=READLEN, k=K)
+    input: #expand(DATA_DIR + "/" + ASSEMBLY_M + "_{len}/{chrom}_{len}_frags", chrom=CHROMOSOMES_M, len=READLEN),
+           #expand(DATA_DIR + "/" + ASSEMBLY_M + "_{len}/{chrom}_{len}_{k}mer_freq", chrom=["chr1"], len=READLEN, k=K),
+           expand(DATA_DIR + "/kmers_stats/"+ASSEMBLY_M+"_{chrom}_{k}mer_count", k=12, chrom=CHROMOSOMES_M)
+
 
 #filter chromosomes (keep chr1-22,X,Y)
 #samtools faidx {input} chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY > local/share/data/GRCh38.fa
@@ -20,6 +22,20 @@ rule split_chrom: #Split reference genome fasta by chromosome
 
             faSplit byname  {input} {params.outdir}
         """
+rule kmers_count:
+    input: fasta_file=CHROM_DIR_M + "/{chrom}.fa", kmer_list=DATA_DIR + "/{k}mer_dictionary"
+    output: DATA_DIR + "/kmers_stats/"+ASSEMBLY_M+"_{chrom}_{k}mer_count"
+    params: outdir=DATA_DIR + "/kmers_stats/", tool=FASTA2MATRIX, k="{k}"
+    log: LOGS_DIR + "/kmers_count-" + ASSEMBLY_M + "_{chrom}_{k}mer.log"
+    benchmark: BENCHMARKS_DIR + "/kmers_count-" + ASSEMBLY_M + "_{chrom}_{k}mer.tsv"
+    shell:
+        """
+            if [ ! -d {params.outdir} ]; then
+                mkdir -p  {params.outdir}
+            fi
+
+            python {params.tool} -k {params.k} -i {input.fasta_file} -d {input.kmer_list} -o {output} 2> {log}
+
 
 rule split_genome: #Simulating $len bp Reads
     input: CHROM_DIR_M + "/{chrom}.fa"
@@ -36,9 +52,11 @@ rule split_genome: #Simulating $len bp Reads
 
 rule kmers_frequency:
     input: kmers_list = DATA_DIR + "/{k}mer_dictionary", fasta_file = DATA_DIR + "/" + ASSEMBLY_M + "_{len}/{chrom}_{len}_frags"
-    output: DATA_DIR + "/" + ASSEMBLY_M + "_{len}/{chrom}_{len}_{k}mer_freq.csv"
+    output: DATA_DIR + "/" + ASSEMBLY_M + "_{len}/{chrom}_{len}_{k}mer_freq"
+    log: LOGS_DIR + "/" + ASSEMBLY_M + "_{chrom}_{len}_{k}mer.log"
+    benchmark: BENCHMARKS_DIR + "/" + ASSEMBLY_M + "_{chrom}_{len}_{k}mer.tsv"
     params: tool=FASTA2MATRIX, k="{k}"
     shell:
         """
-        python {params.tool} -k {params.k} -i {input.fasta_file} -d {input.kmers_list} -o {output}
+        python {params.tool} -k {params.k} -i {input.fasta_file} -d {input.kmers_list} -o {output} -n -f 2> {log}
         """
