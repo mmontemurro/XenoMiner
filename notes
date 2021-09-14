@@ -1,0 +1,55 @@
+human
+<1x16777216 sparse matrix of type '<class 'numpy.int64'>'
+        with 16611176 stored elements in Compressed Sparse Row format>
+
+mouse
+<1x16777216 sparse matrix of type '<class 'numpy.int64'>'
+        with 16583827 stored elements in Compressed Sparse Row format>
+
+>>> len(diff_abs.A[diff_abs.A > 0.00002])
+863
+
+# How to extract the density curve
+>>> x,y = sns.kdeplot(diff_abs.A[0, :]).get_lines()[0].get_data()
+
+# find the knee
+from kneed import KneeLocator
+kn = KneeLocator(x, y, curve='convex', direction='decreasing')
+print(kn.knee)
+y_knee = y[list(x).index(kn.knee)]
+len(diff_abs.A[diff_abs.A > kn.knee])
+16733
+with open('local/share/data/12mer_dictionary', 'rb') as filehandle:
+        kmer_list = pickle.load(filehandle)
+kmer_a = np.asarray(kmer_list)
+kmer_list_diff = list(kmer_a[diff_abs.A[0,:] > kn.knee])
+>>> with open('local/share/data/kmers_stats/GRCh38_GRCm38_12mer_abs_diff', 'wb') as f:
+...     pickle.dump(diff_abs.A[0, :], f)
+
+#knee = 2.868511999593846e-06
+
+#density sparse matrix
+counts.getnnz() / np.prod(counts.shape)
+
+#DSK
+#k = 12
+#GRCh38
+# tot = 8368277
+# singletons = 46889
+# 0,56%
+#GRCh38
+# tot = 8363948
+# singletons = 54923
+# 0,66%
+
+#join  <(sort GRCh38.txt) <(sort GRCm38.txt) | wc -l
+#8346293
+#unique to human: 8368277 − 8346293 = 21984
+#unique to mouse: 8363948 − 8346293 = 17655
+
+# echo -e "kmer\tGRCh38\tGRCm38" > GRCh38_GRCm38.counts; join -e 0 -o auto -a 1 -a 2  <(sort GRCh38.txt) <(sort GRCm38.txt) | tr ' ' \\t >> GRCh38_GRCm38.counts
+#grep -v "kmer" GRCh38_GRCm38.counts | wc -l
+#8385932
+
+# post filter
+# nb_kmer 9382

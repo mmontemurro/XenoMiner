@@ -19,6 +19,7 @@ DATASET=PRJ_ROOT+'/dataset'
 
 LOGS_DIR=DATASET + "/logs"
 BENCHMARKS_DIR=DATASET + "/benchmarks"
+DSK_LOG=DATASET + "/dsk/logs"
 
 READLEN=[48, 76, 101, 150]
 ASSEMBLY="GRCh38"
@@ -26,7 +27,7 @@ ASSEMBLY_FA=DATA_DIR+"/GRCh38/fasta/GRCh38.fa"
 CHROM_DIR=DATA_DIR+"/GRCh38/chromosomes"
 
 ASSEMBLY_M="GRCm38"
-ASSEMBLY_FA_M=DATA_DIR+"/GRCm38/fasta/genome_filtered.fa"
+ASSEMBLY_FA_M=DATA_DIR+"/GRCm38/fasta/GRCm38.fa"
 CHROM_DIR_M=DATA_DIR+"/GRCm38/chromosomes"
 
 
@@ -36,12 +37,17 @@ CHROMOSOMES_M=["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "
 K = [x for x in range(3, 12+1)]
 ALPHABET=['A', 'T', 'C', 'G']
 
+KVALUE = 12
+DSK=BIN_DIR + "/dsk/build/bin/dsk"
+DSK2ASCII=BIN_DIR + "/dsk/build/bin/dsk2ascii"
+DSKSTATS=SRC_DIR + "/tools/kmers_stats_dsk.py"
 
 MK_KMERS_DICT=SRC_DIR + "/tools/kmers_dictionary.py"
 FASTA2MATRIX=SRC_DIR + "/preprocessing/fasta2matrix.py"
 KMERSTATS=SRC_DIR + "/tools/kmer_count_stats.py"
 FILTER_BY_FREQ=SRC_DIR + "/tools/filter_differential_kmers.py"
 KMERSTATS_INTRA=SRC_DIR + "/tools/kmer_count_stats_intra.py"
+
 
 KMER_DIFFERENTIAL = 'local/share/data/12mer_dictionary_differential'
 KNEE = 2.868511999593846e-06

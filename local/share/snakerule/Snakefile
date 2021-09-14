@@ -90,4 +90,3 @@ rule kmers_frequency:
         """
         python {params.tool} -k {params.k} -i {input.fasta_file} -d {input.kmers_list} -o {output} -n -f 2> {log}
         """
-
