@@ -10,6 +10,7 @@ from keras.layers import Convolution1D, MaxPooling1D
 from keras.utils import np_utils
 from keras import backend as K
 import numpy as np
+import argparse
 
 #parameters: sys.argv[1] = input dataset as matrix of k-mers
 nome_train=sys.argv[1].split(".")[0]				

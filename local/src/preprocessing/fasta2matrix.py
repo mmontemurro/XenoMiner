@@ -3,8 +3,7 @@
 #This file contains the code to preprocess a fasta file containing reads, to produce the input matrix for the model
 # Encoding: word embedding
 # Vocabulary: all possibile k-mers of k bases
-# Embedding criteria: skip-gram with negative sampling model (https://www.biorxiv.org/content/10.1101/726729v1, https://www.liebertpub.com/doi/10.1089/cmb.2018.0174)
-# LocalitySensity Hashing (LSH)
+    
 
 import sys
 import math
@@ -13,6 +12,33 @@ import argparse
 import pickle
 from Bio import SeqIO
 from scipy.sparse import csr_matrix, diags
+
+base_val = {"A": 0, "C":1, "T":2, "G":3}
+complement = {"A":"T", "T":"A", "C":"G", "G":"C"}
+canonical_kmers = dict()
+
+def kmer2canonical(kmer):
+    kmer = kmer.upper()
+    if kmer in canonical_kmers.keys():
+        return canonical_kmers[kmer]
+    #reverse
+    rev = kmer[::-1]
+    #complement
+    revcomp = ""
+    for b in rev:
+        revcomp = revcomp + complement[b]
+    canonical = kmer
+    for i in range(len(kmer)):
+        if base_val[revcomp[i]] < base_val[kmer[i]]:
+            canonical = revcomp
+            break
+        elif base_val[kmer[i]] < base_val[revcomp[i]]:
+            canonical = kmer
+            break
+    #store canonical kmer to speed up computation 
+    # when the same kmer is found more than once
+    canonical_kmers[kmer] = canonical
+    return canonical
 
 def list2dict(a):
     res_dct = {a[i] : i for i in range(0, len(a) ) }
@@ -40,6 +66,7 @@ def make_sequence_vector (sequence,
     for i_seq in range(0, seq_length):
         # Extract this k-mer.
         kmer = sequence[i_seq : i_seq + k]
+        kmer = kmer2canonical(kmer)
         if kmer in kmer_dict.keys():
             #There may be some kmers containing N's, so we skip them
             index = kmer_dict[kmer]
@@ -95,11 +122,10 @@ def read_fasta_sequence(fasta_file):
     return sequence
 
 def check_gaps(seq):
-    count = 0
     for b in seq:
-        if b == 'N':
-            count += 1
-    return count
+        if b not in base_val.keys():
+            return True
+    return False
 
 def main():
     parser = argparse.ArgumentParser(description="Compute k-mers frequency matrix from fasta")
@@ -108,8 +134,8 @@ def main():
     parser.add_argument("-o", "--output_file", help="Output file", required=True)
     parser.add_argument("-d", "--kmers_dict", help="k-mers dictionary", required=True)
     parser.add_argument("-a", "--alphabet", help="Set the alphabet arbitrarily", default="ACGT")
-    parser.add_argument("-n", "--discard_gaps", action="store_true", default=False, help='If declared, discards reads made for more than 50%% of N')
     parser.add_argument("-f", "--kmers_frequency", action="store_true", default=False, help="If declared, normalizes kmer counts by computing threir frequency in each read")
+    parser.add_argument("-g", "--discard_gaps",  action="store_true", default=False, help="If declared, discardes sequences which contain > 50 perc of Ns")
 
     args = parser.parse_args()
 
@@ -117,8 +143,8 @@ def main():
     alphabet = args.alphabet
   
     # Make a list of all k-mers.
-    with open(args.kmers_dict, 'rb') as filehandle:
-        kmer_list = pickle.load(filehandle)
+    with open(args.kmers_dict, 'r') as f:
+        kmer_list = f.read().splitlines()
     kmer_dict = list2dict(kmer_list)
 
 
@@ -131,14 +157,14 @@ def main():
     i_sequence = 0
     for sequence in fasta_file:
         # Tell the user what's happening.
+        seq = sequence.seq.upper()
         if args.discard_gaps == True:
-            Ncount = check_gaps(sequence.seq)
-            if Ncount > (0.5*len(sequence.seq)):
+            if check_gaps(seq):
                 continue
         if (i_sequence % 1000 == 0):
             print("Reading %dth sequence." % (i_sequence + 1))
         # Compute the sparse count vector.
-        [indptr, indices, data] = make_sequence_vector(sequence.seq,
+        [indptr, indices, data] = make_sequence_vector(seq,
                                 k,
                                 kmer_dict,
                                 indptr,

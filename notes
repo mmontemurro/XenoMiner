@@ -53,3 +53,16 @@ counts.getnnz() / np.prod(counts.shape)
 
 # post filter
 # nb_kmer 9382
+
+#ch1 48bp
+human = 5186593 reads
+mouse = 4072333 reads
+
+#kmers counting on reads
+1.generate a bunch (100) of tmp files containing a single read #awk '/^>/{s=++d".fasta"} {print > s}' small.fa
+2.count kmers (dks, dsk2ascii)
+3.intersect with the selected ones  #join GRCh38.txt GRCm38.txt
+4. rm files
+
+#GRCh38_48
+# chr1 density = 0.03%

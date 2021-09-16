@@ -5,6 +5,9 @@ import pickle
 from Bio import SeqIO
 from scipy.sparse import csr_matrix
 
+
+
+
 def main():
     parser = argparse.ArgumentParser(description="Compute k-mers frequency matrix from fasta")
     parser.add_argument("-k", "--k_value", help="k value", required=True, type=int)

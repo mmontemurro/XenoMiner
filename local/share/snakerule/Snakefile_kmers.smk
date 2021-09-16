@@ -15,7 +15,7 @@ rule all:
 rule kmers_count_chr_dsk:
     input: DATA_DIR+"/{assembly}/chromosomes/{chrom}.fa"
     output: DATASET + "/dsk/{k}mer/{assembly}_{chrom}.h5"
-    params: tool=DSK, outdir=DATASET + "/dsk/{k}mer/", min_abundance=1, dsk_log = DATASET + "/dsk/{k}mer/logs/{assembly}_{chrom}.out"
+    params: tool=DSK, outdir=DATASET + "/dsk/{k}mer/", min_abundance=1, dsk_log = DATASET + "/dsk/{k}mer/logs/{assembly}_{chrom}.out", cores=DSK_CORES
     log: LOGS_DIR + "/kmers_count_chr_dsk-{assembly}-{chrom}-{k}mer.log"
     benchmark: BENCHMARKS_DIR + "/kmers_count_chr_dsk-{assembly}-{chrom}-{k}mer.tsv"
     shell:
@@ -28,7 +28,7 @@ rule kmers_count_chr_dsk:
                 mkdir -p {params.outdir}/logs
             fi
 
-            {params.tool}  -file {input} -kmer-size {wildcards.k} -abundance-min {params.min_abundance} -out {output} 1> {params.dsk_log} 2> {log}
+            {params.tool}  -file {input} -kmer-size {wildcards.k} -abundance-min {params.min_abundance} -nb-cores {params.cores} -out {output} 1> {params.dsk_log} 2> {log}
         """
 
 rule kmers_2ascii_chr:
@@ -45,7 +45,7 @@ rule kmers_2ascii_chr:
 rule kmers_count_chr_genome:
     input: DATA_DIR+"/{assembly}/fasta/{assembly}.fa"
     output: DATASET + "/dsk/{k}mer/{assembly}.h5"
-    params: tool=DSK, outdir=DATASET + "/dsk/{k}mer", min_abundance=1, dsk_log = DATASET + "/dsk/{k}mer/logs/{assembly}.out"
+    params: tool=DSK, outdir=DATASET + "/dsk/{k}mer", min_abundance=1, dsk_log = DATASET + "/dsk/{k}mer/logs/{assembly}.out", cores=DSK_CORES
     log: LOGS_DIR + "/kmers_count_chr_genome-{assembly}-{k}mer.log"
     benchmark: BENCHMARKS_DIR + "/kmers_count_chr_genome-{assembly}-{k}mer.tsv"
     shell:
@@ -58,7 +58,7 @@ rule kmers_count_chr_genome:
                 mkdir -p {params.outdir}/logs
             fi
 
-            {params.tool}  -file {input} -kmer-size {wildcards.k} -abundance-min {params.min_abundance} -out {output} 1> {params.dsk_log} 2> {log}
+            {params.tool}  -file {input} -kmer-size {wildcards.k} -abundance-min {params.min_abundance} -nb-cores {params.cores} -out {output} 1> {params.dsk_log} 2> {log}
         """
 
 rule kmers_2ascii_genome:

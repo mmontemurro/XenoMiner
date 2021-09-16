@@ -1,26 +1,38 @@
 import sys
 import argparse
-import pandas as pd
+import pickle
+from scipy.sparse import vstack
 
 def main():
     parser = argparse.ArgumentParser(description="Generates label array per chromosome")
-    parser.add_argument("-h", "--human", help="Human matrix", required=True)
+    parser.add_argument("-hu", "--human", help="Human matrix", required=True)
     parser.add_argument("-m", "--mouse", help="Murine matrix", required=True)
-    parser.add_argument("-o", "--output_file", help="Output file", required=True)
+    parser.add_argument("-o", "--outprefix", help="Output prefix", required=True)
 
     args = parser.parse_args()
 
     # read both matrix size
     # generate an array of labels
     # concatenate the two matrices
-    df_h = pd.read_csv(args.human, index_col=0)
-    df_h['label'] = "h"
-    df_m = pd.read_csv(args.murine, index_col=0)
-    df_m['label'] = 'm'
+    with open(args.human, "rb") as f:
+        h = pickle.load(f)
 
-    df = pd.DataFrame(df_h, df_m)
+    with open(args.mouse, "rb") as f:
+        m = pickle.load(f)
 
-    df.to_csv(args.output_file)
+    labels = []
+    for i in range(h.shape[0]):
+        labels.append("h")
+    for i in range(m.shape[0]):
+        labels.append("m")
 
+    dataset = vstack((h, m))
+
+    with open(args.outprefix + ".dat", "wb") as f:
+        pickle.dump(dataset, f)
+
+    with open(args.outprefix + ".lab", "wb") as f:
+        pickle.dump(labels, f)
+    
 if __name__ == "__main__":
     sys.exit(main())

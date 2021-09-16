@@ -3,7 +3,10 @@ include: '../snakemake/conf.sk'
 
 rule all:
     input: 
-           expand(DATA_DIR + "/kmers_stats/GRCh38_GRCm38_{k}mer_pearson_corr", k=12), 
+            expand(DATASET + "/{assembly}_{len}/{chrom}_{len}_{k}mer_freq", assembly=[ASSEMBLY, ASSEMBLY_M], len=READLEN, chrom="chr1", k=12),
+            expand(DATASET + "/datasets/{chrom}_{len}_{k}mer.dat", chrom="chr1", len=READLEN, k=12),
+            expand(DATASET + "/datasets/{chrom}_{len}_{k}mer.lab",  chrom="chr1", len=READLEN, k=12)
+           #expand(DATA_DIR + "/kmers_stats/GRCh38_GRCm38_{k}mer_pearson_corr", k=12), 
            #expand(DATA_DIR + "/" + ASSEMBLY + "_{len}/{chrom}_{len}_frags", chrom=CHROMOSOMES, len=READLEN),
            #expand(DATA_DIR + "/{k}mer_dictionary", k=K),
            #expand(DATA_DIR + "/" + ASSEMBLY + "_{len}/{chrom}_{len}_{k}mer_freq", chrom=["chr1"], len=READLEN, k=K),
@@ -81,12 +84,30 @@ rule make_kmer_list: #generating dictionary of kmers for different values of K
         """
 
 rule kmers_frequency:
-    input: kmers_list = DATA_DIR + "/{k}mer_dictionary", fasta_file = DATA_DIR + "/" + ASSEMBLY + "_{len}/{chrom}_{len}_frags"
-    output: DATA_DIR + "/" + ASSEMBLY + "_{len}/{chrom}_{len}_{k}mer_freq"
-    log: LOGS_DIR + "/" + ASSEMBLY + "_{chrom}_{len}_{k}mer.log"
-    benchmark: BENCHMARKS_DIR + "/" + ASSEMBLY + "_{chrom}_{len}_{k}mer.tsv"
-    params: tool=FASTA2MATRIX, k="{k}"
+    input: kmers_list = DATA_DIR + "/{k}mer_dictionary_dsk", fasta_file = DATA_DIR + "/{assembly}_{len}/{chrom}_{len}_frags"
+    output: DATASET + "/{assembly}_{len}/{chrom}_{len}_{k}mer_freq"
+    log: LOGS_DIR + "/kmers_frequency-{assembly}_{chrom}_{len}_{k}mer.log"
+    benchmark: BENCHMARKS_DIR + "/kmers_frequency-{assembly}_{chrom}_{len}_{k}mer.tsv"
+    params: tool=FASTA2MATRIX, k="{k}", outdir=DATASET + "/{assembly}_{len}/"
     shell:
         """
-        python {params.tool} -k {params.k} -i {input.fasta_file} -d {input.kmers_list} -o {output} -n -f 2> {log}
+        if [ ! -d {params.outdir} ]; then
+            mkdir -p {params.outdir}
+        fi
+
+        python {params.tool} -k {params.k} -i {input.fasta_file} -d {input.kmers_list} -o {output} -g -f 2> {log}
+        """
+
+rule label:
+    input: h=expand(DATASET + "/{assembly}_{{len}}/{{chrom}}_{{len}}_{{k}}mer_freq", assembly=ASSEMBLY),
+            m=expand(DATASET + "/{assembly}_{{len}}/{{chrom}}_{{len}}_{{k}}mer_freq", assembly=ASSEMBLY_M)
+    output: DATASET + "/datasets/{chrom}_{len}_{k}mer.dat", DATASET + "/datasets/{chrom}_{len}_{k}mer.lab"
+    params: tool=LABELLING,  outdir=DATASET + "/datasets", outprefix=DATASET + "/datasets/{chrom}_{len}_{k}mer"
+    shell:
+        """
+            if [ ! -d {params.outdir} ]; then
+                mkdir -p {params.outdir}
+            fi
+
+            python {params.tool} -hu {input.h} -m {input.m} -o {params.outprefix}
         """
