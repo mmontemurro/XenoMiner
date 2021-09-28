@@ -15,14 +15,16 @@ import pandas as pd
 import argparse
 import pickle
 
+import nni
+
 # Custom generator to load data progressively and avoid, overflowing RAM
 
 class DataGenerator(Sequence):
     'Generates data for Keras'
-    def __init__(self, X, list_IDs, labels, batch_size=32, input_length=32,
+    def __init__(self, df, list_IDs, labels, batch_size=32, input_length=32,
                  n_classes=10, shuffle=True):
         'Initialization'
-        self.X = X
+        self.df = df
         self.batch_size = batch_size
         self.input_length = input_length
         self.labels = labels
@@ -45,6 +47,7 @@ class DataGenerator(Sequence):
 
         # Generate data
         X, y = self.__data_generation(list_IDs_temp)
+
         return X, y
 
     def on_epoch_end(self):
@@ -54,13 +57,20 @@ class DataGenerator(Sequence):
             np.random.shuffle(self.indexes)
 
     def __data_generation(self, list_IDs_temp):
-        'Generates data containing batch_size samples' # X : (n_samples, *dim, n_channels)        
+        'Generates data containing batch_size samples' # X : (n_samples, *dim, n_channels)
+        # Initialization
+        X = np.empty((self.batch_size, self.input_length), dtype=float)
+        y = np.empty((self.batch_size), dtype=int)
+
         # Generate data
         # Store sample
-        X = np.asarray(self.X[list_IDs_temp, :].todense())
-        X = X.reshape(X.shape + (1,))
-        y  = self.labels[list_IDs_temp]
+        X = self.df.loc[list_IDs_temp]
 
+        for i, ID in enumerate(list_IDs_temp):
+            # Store class
+            y[i] = self.labels[ID]
+
+        X = X.values.reshape(X.shape + (1,))
         return X, np_utils.to_categorical(y, num_classes=self.n_classes)
 
 
@@ -73,18 +83,18 @@ def load_data(prefix):
         Y = pickle.load(f)
     #convert scipy sparse matrix to pandas sparse dataframe
     print("Converting to pandas sparse dataframe")
-    #df_X = pd.DataFrame.sparse.from_spmatrix(X)
+    df_X = pd.DataFrame.sparse.from_spmatrix(X)
     #convert labels to integers
     print("Converting labels to integer labels")
     array_Y = np.asarray(Y)
     encoder = LabelEncoder()
     int_Y = encoder.fit_transform(array_Y)
-    id_labels_dict = dict(zip(range(len(int_Y)), int_Y))
-    return X, int_Y, id_labels_dict, 2, X.shape[1]
+    id_labels_dict = dict(zip(df_X.index.tolist(), int_Y))
+    return df_X,int_Y, id_labels_dict, 2, X.shape[1]
 
 def create_model(nb_classes,input_length):
     model = Sequential()
-    model.add(Convolution1D(5,5, padding='valid', input_shape=(input_length, 1))) #input_dim
+    model.add(Convolution1D(5,5, padding='valid',  input_shape=(input_length, 1))) #input_dim
     model.add(Activation('relu'))
     model.add(MaxPooling1D(pool_size=2,padding='valid'))
     model.add(Convolution1D(10, 5,padding='valid'))
@@ -101,7 +111,6 @@ def create_model(nb_classes,input_length):
     model.compile(optimizer='adam',
               loss='categorical_crossentropy',
               metrics=['accuracy'])
-    print(model.summary())
     return model
 
 #Nested k fold cross validation
@@ -125,28 +134,28 @@ def create_model(nb_classes,input_length):
 #|---------------- train ---------------------|--- test ---|
 
 
-def train_and_evaluate_model (model, datatr, datate, labels_dict,labelstr, labelste, input_length, nb_classes, nb_workers, batch_size=64):
+def train_and_evaluate_model (model, datatr, datate, labels_dict, labelstr, labelste, input_length, nb_classes, nb_workers):
 
     #TODO this line transform the dataset to 3D dataset, how to do it with pandas?
     #datatr = datatr.values.reshape(datatr.shape + (1,))
-    #labelstr = np_utils.to_categorical(labelstr, nb_classes)
-    #labelste_bin = np_utils.to_categorical(labelste, nb_classes)
+    labelstr = np_utils.to_categorical(labelstr, nb_classes)
+    labelste_bin = np_utils.to_categorical(labelste, nb_classes)
     callbacks = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=10)
 
-    training_generator = DataGenerator(datatr, range(datatr.shape[0]),labelstr, batch_size=batch_size, input_length=input_length, n_classes=nb_classes)
-    testing_generator = DataGenerator(datate, range(datate.shape[0]), labelste, batch_size=batch_size, input_length=input_length, n_classes=nb_classes)
+    training_generator = DataGenerator(datatr, datatr.index.tolist(), labels_dict, batch_size=64, input_length=input_length, n_classes=nb_classes)
+    testing_generator = DataGenerator(datate, datate.index.tolist(),  labels_dict, batch_size=64, input_length=input_length, n_classes=nb_classes)
     print("------------------- TRAINING ----------------------")
     #model.fit(training_generator,validation_data=validation_generator,epochs=100,workers=nb_workers,callbacks = callbacks,verbose=1)
     
-    model.fit(training_generator, epochs=100, steps_per_epoch=datatr.shape[0]/batch_size, callbacks=callbacks, workers=nb_workers,use_multiprocessing=True, verbose = 1)
-    tr_scores = model.evaluate(training_generator, workers=nb_workers,use_multiprocessing=True, verbose=1)
+    model.fit(training_generator, epochs=100, callbacks=callbacks, workers=nb_workers,use_multiprocessing=True, verbose = 1)
+    tr_scores = model.evaluate(datatr,labelstr,verbose=1)
 
     #datate = datate.values.reshape(datate.shape + (1,))
     #print(tr_scores)
 
     print("------------------- TESTING ----------------------")
-    preds = model.predict(testing_generator, workers=nb_workers, use_multiprocessing=True, verbose = 1) 
-    te_scores = model.evaluate(testing_generator, workers=nb_workers,use_multiprocessing=True, verbose=1)
+    preds = model.predict(testing_generator, workers=nb_workers, use_multiprocessing=False, verbose = 1) 
+    te_scores = model.evaluate(datate, labelste_bin,verbose=1)
     return preds, labelste, tr_scores, te_scores
 
 
@@ -160,7 +169,6 @@ if __name__ == "__main__":
     
     n_folds = 10
     X,Y, labels_dict, nb_classes,input_length = load_data(args.inprefix)
-    print("Input length:" + str(input_length))
     i=1
     kfold = StratifiedKFold(n_splits=n_folds, shuffle=True)
     if args.n_threads:
@@ -170,7 +178,7 @@ if __name__ == "__main__":
         print("Running fold {}".format(i))
         model = None # Clearing the NN.
         model = create_model(nb_classes,input_length)
-        pred,Y_test, tr_scores, te_scores = train_and_evaluate_model(model, X[train], X[test], labels_dict, Y[train], Y[test], input_length, nb_classes, args.n_threads)
+        pred,Y_test, tr_scores, te_scores = train_and_evaluate_model(model, X.iloc[train], X.iloc[test], labels_dict, Y[train], Y[test], input_length, nb_classes, args.n_threads)
         np.save(args.outprefix+"_preds"+str(i),pred)
         np.save(args.outprefix+"_test"+str(i),Y[test])
         np.save(args.outprefix+"_tr_scores"+str(i),tr_scores)
