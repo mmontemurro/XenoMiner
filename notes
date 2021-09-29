@@ -37,7 +37,7 @@ counts.getnnz() / np.prod(counts.shape)
 # tot = 8368277
 # singletons = 46889
 # 0,56%
-#GRCh38
+#GRCm38
 # tot = 8363948
 # singletons = 54923
 # 0,66%
@@ -67,7 +67,7 @@ mouse = 4072333 reads
 #GRCh38_48
 # chr1 density = 0.03%
 
-#small test, ~23k reads (human + mouse), k=12, frags length=150, fold 1
+#small test, ~28k reads (human + mouse), k=12, frags length=150, fold 1
 1289/1289 [==============================] - 34s 26ms/step - loss: 0.2471 - accuracy: 0.9118
 806/806 [==============================] - 7s 9ms/step - loss: 0.2447 - accuracy: 0.9126
 ------------------- TESTING ----------------------
@@ -79,3 +79,21 @@ mouse = 4072333 reads
 
 >>> avg(te_accuracy)
 0.8586593687534332
+
+# Test on 150b frags of chr1 (using DSK and keras data generator):
+# test set 
+>>> np.average(te_loss)
+0.6414746403694153
+>>> np.average(te_acc)
+0.8565340936183929
+
+#training set
+>>> np.average(tr_loss)
+0.2442819744348526
+>>> np.average(tr_acc)
+0.9127954065799713
+
+# 3) simulation of paired-end reads of 150bp with the mean fragment size 500 and standard deviation 10, and with coverage 1X
+#    using the built-in combined read quality profiles
+number of reads in GRCh38_chr1_sim_R1.fq = 768383 (x2)
+number of reads in GRCm38_chr1_sim_R1.fq = 639623 (x2)

@@ -37,6 +37,7 @@ CHROMOSOMES_M=["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "
 K = [x for x in range(3, 12+1)]
 ALPHABET=['A', 'T', 'C', 'G']
 
+#DSK
 KVALUE = 12
 DSK_CORES = 10
 DSK=BIN_DIR + "/dsk/build/bin/dsk"
@@ -54,3 +55,6 @@ KMERSTATS_INTRA=SRC_DIR + "/tools/kmer_count_stats_intra.py"
 KMER_DIFFERENTIAL = 'local/share/data/12mer_dictionary_differential'
 KNEE = 2.868511999593846e-06
 
+#SIMULATIONS
+CHR1 = {ASSEMBLY:CHROM_DIR+"/chr1.fa", ASSEMBLY_M : CHROM_DIR_M+"/chr1.fa"}
+ART = BIN_DIR + "/art_bin_MountRainier/art_illumina"

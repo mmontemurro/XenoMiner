@@ -125,7 +125,7 @@ def create_model(nb_classes,input_length):
 #|---------------- train ---------------------|--- test ---|
 
 
-def train_and_evaluate_model (model, datatr, datate, labels_dict,labelstr, labelste, input_length, nb_classes, nb_workers, batch_size=64):
+def train_and_evaluate_model (model, datatr, datate, labels_dict,labelstr, labelste, input_length, nb_classes, nb_workers, batch_size=512):
 
     #TODO this line transform the dataset to 3D dataset, how to do it with pandas?
     #datatr = datatr.values.reshape(datatr.shape + (1,))
@@ -158,7 +158,7 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--n_threads", help="Number of cores. Default: all available ones", type=int)
     args = parser.parse_args()
     
-    n_folds = 10
+    n_folds = 3
     X,Y, labels_dict, nb_classes,input_length = load_data(args.inprefix)
     print("Input length:" + str(input_length))
     i=1
