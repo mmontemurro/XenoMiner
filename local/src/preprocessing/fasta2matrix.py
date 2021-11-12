@@ -136,6 +136,7 @@ def main():
     parser.add_argument("-a", "--alphabet", help="Set the alphabet arbitrarily", default="ACGT")
     parser.add_argument("-f", "--kmers_frequency", action="store_true", default=False, help="If declared, normalizes kmer counts by computing threir frequency in each read")
     parser.add_argument("-g", "--discard_gaps",  action="store_true", default=False, help="If declared, discardes sequences which contain > 50 perc of Ns")
+    parser.add_argument("-t", "--file_type",  help="File format (fasta/fastq). Default = fastq.", default="fastq")
 
     args = parser.parse_args()
 
@@ -148,7 +149,7 @@ def main():
     kmer_dict = list2dict(kmer_list)
 
 
-    fasta_file = SeqIO.parse(open(args.input_file),'fasta')
+    fasta_file = SeqIO.parse(open(args.input_file), args.file_type)
     # Iterate till we've read the whole file and generate a sparse count matrix
     indptr = [0]
     indices = []       

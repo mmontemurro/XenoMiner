@@ -3,9 +3,10 @@ include: '../snakemake/conf.sk'
 
 rule all:
     input: 
-            expand(DATASET + "/{assembly}_{len}/{chrom}_{len}_{k}mer_freq.small", assembly=[ASSEMBLY, ASSEMBLY_M], len=150, chrom="chr1", k=12),
-            expand(DATASET + "/datasets/{chrom}_{len}_{k}mer_small.dat.npy", chrom="chr1", len=150, k=12),
-            expand(DATASET + "/datasets/{chrom}_{len}_{k}mer_small.lab.npy",  chrom="chr1", len=150, k=12)
+            expand(DATASET + "/{assembly}_{len}/{chrom}_{len}_{k}mer_freq", assembly=[ASSEMBLY, ASSEMBLY_M], len=150, chrom="chr1", k=12),
+            expand(DATASET + "/datasets/{chrom}_{len}_{k}mer.dat", chrom="chr1", len=150, k=12),
+            expand(DATASET + "/datasets/{chrom}_{len}_{k}mer.lab",  chrom="chr1", len=150, k=12),
+            expand(DATASET + "/cnn-{chrom}_{len}_{k}mer_bin_cross_entr2.done", chrom="chr1", len=150, k=12)
            #expand(DATA_DIR + "/kmers_stats/GRCh38_GRCm38_{k}mer_pearson_corr", k=12), 
            #expand(DATA_DIR + "/" + ASSEMBLY + "_{len}/{chrom}_{len}_frags", chrom=CHROMOSOMES, len=READLEN),
            #expand(DATA_DIR + "/{k}mer_dictionary", k=K),
@@ -86,10 +87,10 @@ rule split_chrom: #Split reference genome fasta by chromosome
 
 
 rule kmers_frequency:
-    input: kmers_list = DATA_DIR + "/{k}mer_dictionary_dsk", fasta_file = DATA_DIR + "/{assembly}_{len}/{chrom}_{len}_frags.small"
-    output: DATASET + "/{assembly}_{len}/{chrom}_{len}_{k}mer_freq.small"
-    log: LOGS_DIR + "/kmers_frequency-{assembly}_{chrom}_{len}_{k}mer-small.log"
-    benchmark: BENCHMARKS_DIR + "/kmers_frequency-{assembly}_{chrom}_{len}_{k}mer-small.tsv"
+    input: kmers_list = DATA_DIR + "/{k}mer_dictionary_dsk", fasta_file = DATA_DIR + "/{assembly}_{len}/{chrom}_{len}_frags"
+    output: DATASET + "/{assembly}_{len}/{chrom}_{len}_{k}mer_freq"
+    log: LOGS_DIR + "/kmers_frequency-{assembly}_{chrom}_{len}_{k}merlog"
+    benchmark: BENCHMARKS_DIR + "/kmers_frequency-{assembly}_{chrom}_{len}_{k}mertsv"
     params: tool=FASTA2MATRIX, k="{k}", outdir=DATASET + "/{assembly}_{len}/"
     shell:
         """
@@ -101,10 +102,10 @@ rule kmers_frequency:
         """
 
 rule label:
-    input: h=expand(DATASET + "/{assembly}_{{len}}/{{chrom}}_{{len}}_{{k}}mer_freq.small", assembly=ASSEMBLY),
-            m=expand(DATASET + "/{assembly}_{{len}}/{{chrom}}_{{len}}_{{k}}mer_freq.small", assembly=ASSEMBLY_M)
-    output: DATASET + "/datasets/{chrom}_{len}_{k}mer_small.dat.npy", DATASET + "/datasets/{chrom}_{len}_{k}mer_small.lab.npy"
-    params: tool=LABELLING,  outdir=DATASET + "/datasets", outprefix=DATASET + "/datasets/{chrom}_{len}_{k}mer_small"
+    input: h=expand(DATASET + "/{assembly}_{{len}}/{{chrom}}_{{len}}_{{k}}mer_freq", assembly=ASSEMBLY),
+            m=expand(DATASET + "/{assembly}_{{len}}/{{chrom}}_{{len}}_{{k}}mer_freq", assembly=ASSEMBLY_M)
+    output: DATASET + "/datasets/{chrom}_{len}_{k}mer.dat", DATASET + "/datasets/{chrom}_{len}_{k}mer.lab"
+    params: tool=LABELLING,  outdir=DATASET + "/datasets", outprefix=DATASET + "/datasets/{chrom}_{len}_{k}mer"
     shell:
         """
             if [ ! -d {params.outdir} ]; then
@@ -112,4 +113,18 @@ rule label:
             fi
 
             python {params.tool} -hu {input.h} -m {input.m} -o {params.outprefix}
+        """
+
+rule cnn:
+    input: DATASET + "/datasets/{chrom}_{len}_{k}mer.dat", DATASET + "/datasets/{chrom}_{len}_{k}mer.lab"
+    output: touch(DATASET + "/cnn-{chrom}_{len}_{k}mer_bin_cross_entr2.done")
+    params: in_prefix = DATASET + "/datasets/{chrom}_{len}_{k}mer", out_prefix = DATASET + "/models/{chrom}_{len}_{k}mer_bin_cross_entr2", 
+            outdir = DATASET + "/models", threads = 20, cnn = CNN
+    shell:
+        """
+            if [ ! -d {params.outdir} ]; then
+                mkdir -p {params.outdir}
+            fi
+
+            python {params.cnn} -i {params.in_prefix} -o {params.out_prefix} -t {params.threads}
         """

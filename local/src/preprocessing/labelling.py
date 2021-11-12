@@ -29,11 +29,13 @@ def main():
 
     dataset = vstack((h, m))
 
-    with open(args.outprefix + ".dat.npy", "wb") as f:
-        np.save(f, dataset)
+    print("Saving " + args.outprefix + ".dat")
+    with open(args.outprefix + ".dat", "wb") as f:
+        pickle.dump(dataset, f)
 
-    with open(args.outprefix + ".lab.npy", "wb") as f:
-        np.save(f, labels)
+    print("Saving " + args.outprefix + ".lab")
+    with open(args.outprefix + ".lab", "wb") as f:
+        pickle.dump(labels, f)
     
 if __name__ == "__main__":
     sys.exit(main())
