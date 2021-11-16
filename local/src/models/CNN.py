@@ -137,7 +137,9 @@ def create_model(nb_classes,input_length):
 #|---------------- train ---------------------|--- test ---|
 
 
-def train_and_evaluate_model (model, datatr, datate, labels_dict,labelstr, labelste, nb_classes, nb_workers, batch_size=512):
+def train_and_evaluate_model (model, datatr, datate, labels_dict,labelstr, labelste, nb_classes, 
+                            #nb_workers, 
+                            batch_size=512):
 
     #TODO this line transform the dataset to 3D dataset, how to do it with pandas?
     #datatr = datatr.values.reshape(datatr.shape + (1,))
@@ -155,17 +157,25 @@ def train_and_evaluate_model (model, datatr, datate, labels_dict,labelstr, label
     print("------------------- TRAINING ----------------------")
     #model.fit(training_generator,validation_data=validation_generator,epochs=100,workers=nb_workers,callbacks = callbacks,verbose=1)
     
-    model.fit(training_generator, epochs=100, steps_per_epoch=datatr.shape[0]/batch_size, callbacks=callbacks, workers=nb_workers,use_multiprocessing=True, verbose = 1)
-    tr_scores = model.evaluate(training_generator, workers=nb_workers,use_multiprocessing=True, verbose=1)
+    model.fit(training_generator, epochs=100, steps_per_epoch=datatr.shape[0]/batch_size, callbacks=callbacks, 
+                                    #workers=nb_workers,
+                                    use_multiprocessing=True, verbose = 1)
+    tr_scores = model.evaluate(training_generator, 
+                            #workers=nb_workers,
+                            use_multiprocessing=True, verbose=1)
 
     #datate = datate.values.reshape(datate.shape + (1,))
     #print(tr_scores)
 
     print("------------------- TESTING ----------------------")
-    preds = model.predict(testing_generator, workers=nb_workers, use_multiprocessing=True, verbose = 1) 
+    preds = model.predict(testing_generator, 
+                            #workers=nb_workers, 
+                            use_multiprocessing=True, verbose = 1) 
     #y_pred =  [0 if y[0] > y[1] else 1 for y in preds ]
     #mat = confusion_matrix(labelste, y_pred)
-    te_scores = model.evaluate(testing_generator, workers=nb_workers,use_multiprocessing=True, verbose=1)
+    te_scores = model.evaluate(testing_generator, 
+                                #workers=nb_workers,
+                                use_multiprocessing=True, verbose=1)
     return preds, labelste, tr_scores, te_scores
 
 def plot_confusion_matrix(cm, outprefix):
@@ -196,7 +206,9 @@ if __name__ == "__main__":
     X,Y, labels_dict, nb_classes,input_length = load_data(args.inprefix)
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.20, random_state=42)
     model = create_model(nb_classes,input_length)
-    pred, Y_test, tr_scores, te_scores, cm = train_and_evaluate_model(model, X_train, X_test, labels_dict, y_train, y_test, nb_classes, args.n_threads)
+    pred, Y_test, tr_scores, te_scores, cm = train_and_evaluate_model(model, X_train, X_test, labels_dict, y_train, y_test, nb_classes
+                                        #, args.n_threads
+                                        )
 
     np.save(args.outprefix+"_preds",pred)
     np.save(args.outprefix+"_test",y_test)

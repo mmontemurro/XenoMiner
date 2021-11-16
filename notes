@@ -99,3 +99,5 @@ number of reads in GRCh38_chr1_sim_R1.fq = 768383 (x2)
 number of reads in GRCm38_chr1_sim_R1.fq = 639623 (x2)
 
 python /mnt/trcanmed/snaketree/prj/XenoMiner/local/src/models/CNN.py -i datasets/chr1_150_12mer -o results/chr1_150_12mer_batchsize512 -t 20
+
+/home/bioeda/bio/spatial/slurm_snake/
