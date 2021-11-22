@@ -1,13 +1,13 @@
 
 {
-    "optimizer":{"_type":"choice","_value":["Adam", "SGD"]},
     "learning_rate":{"_type":"choice","_value":[0.0001, 0.001, 0.002, 0.005, 0.01]},
-    "dropout_rate":{"_type":"uniform", "_value":[0.1, 0,8]},
+    "dropout_rate":{"_type":"choice", "_value":[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]},
     "batch_size":{"_type":"choice","_value":[32, 64, 128, 256, 512, 1024]},
-    "kernel_size1":{"_type":"choice", "_value":[1, 2, 3, 5]},
+    "kernel_size1":{"_type":"choice", "_value":[1, 2, 3, 5, 10]},
     "kernel_n1":{"_type":"choice", "_value":[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]},
-    "pooling_size1":{},
-    "kernel_size2":{"_type":"choice", "_value":[1, 2, 3, 5]},
-    "kernel_n2":{},
-    "pooling_size2":{}
+    "kernel_size2":{"_type":"choice", "_value":[1, 2, 3, 5, 10]},
+    "kernel_n2":{"_type":"choice", "_value":[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]},
+    "activation_function1":{"_type":"choice", "_value":["relu", "selu", "tanh", "elu"]},
+    "activation_function2":{"_type":"choice", "_value":["relu", "selu", "tanh", "elu"]},
+    "activation_function3":{"_type":"choice", "_value":["relu", "selu", "tanh", "elu"]}
 }
