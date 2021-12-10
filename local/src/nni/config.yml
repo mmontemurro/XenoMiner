@@ -1,7 +1,7 @@
 authorName: Marilisa
 experimentName: xenominer-cnn
-maxExecDuration: 24h
-maxTrialNum: 100
+maxExecDuration: 240h
+maxTrialNum: 3
 #choice: local, remote, pai
 trainingServicePlatform: local
 searchSpacePath: search_space.json
@@ -12,7 +12,7 @@ tuner:
   #SMAC (SMAC should be installed through nnictl)
   builtinTunerName: Random #no intuition of hyperparameters distribution
 trial:
-  command: python CNN_NNI.py -i /home/montemurro/XenoMiner/dataset/datasets/chr1_150_12mer_small -t 5
+  command: python CNN_NNI.py -i /home/montemurro/XenoMiner/dataset/datasets/chr1_150_12mer_small -t 10
   codeDir: .       
 trialConcurrency: 1
 

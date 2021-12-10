@@ -1,4 +1,3 @@
-from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
@@ -17,9 +16,7 @@ from tensorflow.keras.optimizers import Adam
 import numpy as np
 import pandas as pd
 import argparse
-import pickle
-import seaborn as sns
-import matplotlib.pyplot as plt     
+import pickle    
 import nni
 import logging
 
