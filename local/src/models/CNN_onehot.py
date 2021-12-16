@@ -20,6 +20,8 @@ import pickle
 import seaborn as sns
 import matplotlib.pyplot as plt     
 
+# TODO 
+# 1. modify the load data method
 
 def recall_m(y_true, y_pred):
     true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
